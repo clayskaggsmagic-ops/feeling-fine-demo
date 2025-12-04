@@ -228,9 +228,9 @@ const CornerstoneTracker = ({ date }) => {
                                 )}
                             </>
                         ) : (
-                            /* Desktop: Vertical list */
+                            /* Desktop: Grid Layout */
                             <>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
                                     {allActs.slice(0, 15).map((act) => (
                                         <label key={act.id} style={{
                                             display: 'flex',

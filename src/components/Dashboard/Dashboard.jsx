@@ -67,20 +67,19 @@ const Dashboard = ({ user, onLogout }) => {
                 {/* Desktop Navigation - Fixed at bottom */}
                 {!isMobile && (
                     <div style={{
-                        position: 'sticky',
-                        top: '20px',
+                        position: 'relative',
+                        margin: '0 auto 2rem auto',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         width: '90%',
                         maxWidth: '600px',
+                        background: 'white',
+                        padding: '1rem 2rem',
+                        borderRadius: '50px',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                         display: 'flex',
-                        background: 'rgba(255, 255, 255, 0.95)',
-                        backdropFilter: 'blur(10px)',
-                        WebkitBackdropFilter: 'blur(10px)',
-                        padding: '0.5rem',
-                        borderRadius: '30px',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                        border: '1px solid var(--glass-border)',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                         zIndex: 1000
                     }}>
                         {navItems.map((item) => (
