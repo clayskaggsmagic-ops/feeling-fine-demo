@@ -1,0 +1,63 @@
+HELLO! WELCOME TO "FEELING FINE"
+================================================================
+This website was built to help you feel your best every day. It is not about strict diets or running marathons. It is about doing "Small Acts"—little, easy things that add up to make a big difference in your health.
+
+Here is a guide to everything you will see on the website.
+
+1. GETTING STARTED (The "Onboarding")
+----------------------------------------------------------------
+When you first visit, we ask you a few simple questions.
+*   **Why?** We want to know what matters to YOU. Do you want more energy? Better sleep? A sharper memory?
+*   **What to do:** Just click the answers that fit you best. There are no wrong answers!
+
+2. YOUR DAILY DASHBOARD (The "My Wellness" Tab)
+----------------------------------------------------------------
+This is your main screen. Think of it as your daily checklist for a good life.
+
+A. THE 7 CORNERSTONES OF HEALTH
+We don't just look at diet and exercise. We look at the whole picture. You will see 7 sections:
+1.  **Nutrition** 🍎: Eating fresh, healthy foods.
+2.  **Movement** 🏃: Keeping your body active (even just a walk!).
+3.  **Sleep** 😴: Getting good rest so you have energy.
+4.  **Stress Management** 🧘: Finding calm and peace in your day.
+5.  **Social Connection** 🤝: Talking to friends and family (very important!).
+6.  **Brain Health** 🧠: Doing puzzles or learning new things to keep your mind sharp.
+7.  **Healthy Aging** 🌿: Taking care of your skin, posture, and overall well-being.
+
+B. TRACKING "SMALL ACTS"
+*   **What are they?** Under each section, you will see simple tasks like "Drank a glass of water" or "Called a friend."
+*   **How to use:** Did you do one? Great! Just click the little box next to it.
+*   **Why?** checking these boxes helps you see all the good things you are doing for yourself. It feels good to see them add up!
+*   **Custom Acts:** Don't see what you did? You can type your own in the box (like "Watered the garden") and add it to your list.
+
+3. CONNECTING WITH OTHERS (The "Community" Tab)
+----------------------------------------------------------------
+Health is better when we do it together.
+*   **Weekly Challenge:** Every week, we all try to do one thing together, like "Drink more water." It’s fun to be part of a team!
+*   **Friends:** You can see a list of your friends here.
+*   **Podcasts & Webinars:** We have built-in radio shows and videos where experts talk about how to stay healthy and happy.
+
+4. SEEING YOUR SUCCESS (The "Report" Tab)
+----------------------------------------------------------------
+Click "Report" to see a summary of your hard work.
+
+A. THE BIG CHART
+*   **What is it?** A graph that shows how many Small Acts you did each day for the last month.
+*   **How to use:**
+    *   Want to see how you slept? Click the "Sleep" button at the bottom.
+    *   Want to see everything? Click "Total."
+*   **Why?** It helps you see patterns. Maybe you do great on Tuesdays but forget to rest on Fridays. This helps you learn about yourself.
+
+B. TRENDS (The Arrow)
+*   Look for the arrow next to your score.
+*   **Trending Up ↗**: You are doing even better than last week! Keep it up!
+*   **Trending Down ↘**: A gentle reminder to maybe add one more small act tomorrow.
+
+C. THE WELLNESS ASSISTANT (The Chatbot)
+*   **What is it?** You will see a chat window that says "Wellness Assistant." This is a smart computer helper (AI).
+*   **What does it do?** It looks at all your numbers—your sleep, your movement, your mood—and gives you friendly advice.
+*   **Example:** If it sees you haven't slept well lately, it might say, "I noticed your sleep is a little low. Maybe try reading a book before bed tonight?"
+*   **Why?** It’s like having a friendly coach who is always there to encourage you.
+
+----------------------------------------------------------------
+Remember: The goal is simply to "Feel Fine." Do what you can, enjoy your day, and let this website help you celebrate your health!

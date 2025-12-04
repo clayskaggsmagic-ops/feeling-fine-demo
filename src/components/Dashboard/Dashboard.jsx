@@ -1,0 +1,131 @@
+import React, { useState, useEffect } from 'react';
+import DailyDoseCard from './DailyDoseCard';
+import CornerstoneTracker from './CornerstoneTracker';
+import FeelingFineInput from './FeelingFineInput';
+import WeeklyReport from '../Reporting/WeeklyReport';
+import Community from '../Community/Community';
+
+import { DAILY_DOSES } from '../../data/models';
+import useIsMobile from '../../hooks/useIsMobile';
+
+const Dashboard = ({ user, onLogout }) => {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [activeView, setActiveView] = useState('home'); // 'home', 'community', 'report'
+    const isMobile = useIsMobile();
+
+    // Get a random dose based on the date (simple hash)
+    const doseIndex = currentDate.getDate() % DAILY_DOSES.length;
+    const dailyDose = DAILY_DOSES[doseIndex];
+
+    const navItems = [
+        { id: 'home', label: 'My Wellness', icon: '🏠' },
+        { id: 'community', label: 'Community', icon: '👥' },
+        { id: 'report', label: 'Report', icon: '📊' }
+    ];
+
+    const renderContent = () => {
+        if (activeView === 'home') {
+            return (
+                <>
+                    {/* Day Switcher for Demo */}
+                    <DailyDoseCard
+                        message={dailyDose}
+                        date={currentDate}
+                        onPrev={() => {
+                            const newDate = new Date(currentDate);
+                            newDate.setDate(currentDate.getDate() - 1);
+                            setCurrentDate(newDate);
+                        }}
+                        onNext={() => {
+                            const newDate = new Date(currentDate);
+                            newDate.setDate(currentDate.getDate() + 1);
+                            setCurrentDate(newDate);
+                        }}
+                    />
+                    <div className="mt-2">
+                        <FeelingFineInput date={currentDate} />
+                    </div>
+                    <div className="mt-2">
+                        <CornerstoneTracker date={currentDate} />
+                    </div>
+                </>
+            );
+        }
+        if (activeView === 'community') return <Community user={user} />;
+        if (activeView === 'report') return <WeeklyReport user={user} />;
+    };
+
+    return (
+        <div className="animate-fade-in" style={{ paddingBottom: isMobile ? '80px' : '0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h3 style={{ color: 'var(--color-text-secondary)' }}>Hello, {user?.name || 'Member'}</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            {!isMobile && (
+                <div style={{ display: 'flex', background: 'var(--glass-bg)', padding: '0.5rem', borderRadius: 'var(--radius-lg)', marginBottom: '1.5rem', boxShadow: 'var(--glass-shadow)' }}>
+                    {navItems.map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveView(item.id)}
+                            style={{
+                                flex: 1,
+                                padding: '0.8rem',
+                                borderRadius: 'var(--radius-md)',
+                                background: activeView === item.id ? 'white' : 'transparent',
+                                color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+                                fontWeight: activeView === item.id ? '600' : '400',
+                                boxShadow: activeView === item.id ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
+                                textTransform: 'capitalize'
+                            }}
+                        >
+                            {item.label}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {renderContent()}
+
+            {/* Mobile Bottom Navigation */}
+            {isMobile && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'white',
+                    borderTop: '1px solid var(--glass-border)',
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    padding: '0.5rem',
+                    boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    zIndex: 50
+                }}>
+                    {navItems.map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveView(item.id)}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                background: 'transparent',
+                                color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+                                fontSize: '0.8rem',
+                                gap: '4px'
+                            }}
+                        >
+                            <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                            <span>{item.label}</span>
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Dashboard;

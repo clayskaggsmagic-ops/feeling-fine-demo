@@ -1,0 +1,206 @@
+import React, { useState, useEffect } from 'react';
+import { CORNERSTONE_CATEGORIES, SMALL_ACTS, DAY_FOCUS_MAPPING } from '../../data/models';
+
+const CornerstoneTracker = ({ date }) => {
+    const [expandedCategory, setExpandedCategory] = useState(null);
+    const [completedActs, setCompletedActs] = useState({});
+    const [customActs, setCustomActs] = useState({}); // { categoryId: [ {id, text} ] }
+    const [newActInputs, setNewActInputs] = useState({}); // { categoryId: string }
+    const [showOthers, setShowOthers] = useState(false);
+
+    const dateKey = date.toISOString().split('T')[0];
+    const dayOfWeek = date.getDay();
+    const focusedCategoryId = DAY_FOCUS_MAPPING[dayOfWeek];
+
+    useEffect(() => {
+        const savedData = JSON.parse(localStorage.getItem('feelingFineTracking') || '{}');
+        const dayData = savedData[dateKey] || {};
+        setCompletedActs(dayData.completedActs || {});
+
+        // Load custom acts from storage (global, not per day)
+        const savedCustomActs = JSON.parse(localStorage.getItem('feelingFineCustomActs') || '{}');
+        setCustomActs(savedCustomActs);
+
+        // Auto-expand the focused category
+        setExpandedCategory(focusedCategoryId);
+    }, [dateKey, focusedCategoryId]);
+
+    const toggleCategory = (id) => {
+        setExpandedCategory(expandedCategory === id ? null : id);
+    };
+
+    const toggleAct = (categoryId, actId) => {
+        const currentCategoryActs = completedActs[categoryId] || [];
+        let newCategoryActs;
+
+        if (currentCategoryActs.includes(actId)) {
+            newCategoryActs = currentCategoryActs.filter(id => id !== actId);
+        } else {
+            newCategoryActs = [...currentCategoryActs, actId];
+        }
+
+        const newCompletedActs = {
+            ...completedActs,
+            [categoryId]: newCategoryActs
+        };
+
+        setCompletedActs(newCompletedActs);
+
+        // Persist
+        const savedData = JSON.parse(localStorage.getItem('feelingFineTracking') || '{}');
+        const dayData = savedData[dateKey] || {};
+        savedData[dateKey] = {
+            ...dayData,
+            completedActs: newCompletedActs
+        };
+        localStorage.setItem('feelingFineTracking', JSON.stringify(savedData));
+    };
+
+    const handleAddCustomAct = (categoryId) => {
+        const text = newActInputs[categoryId];
+        if (!text || !text.trim()) return;
+
+        const newAct = {
+            id: `custom_${categoryId}_${Date.now()}`,
+            text: text.trim(),
+            category: categoryId
+        };
+
+        const updatedCustomActs = {
+            ...customActs,
+            [categoryId]: [...(customActs[categoryId] || []), newAct]
+        };
+
+        setCustomActs(updatedCustomActs);
+        localStorage.setItem('feelingFineCustomActs', JSON.stringify(updatedCustomActs));
+
+        // Clear input
+        setNewActInputs({ ...newActInputs, [categoryId]: '' });
+
+        // Auto-check the new act
+        toggleAct(categoryId, newAct.id);
+    };
+
+    const renderCategoryCard = (category, isFocused = false) => {
+        const isExpanded = expandedCategory === category.id;
+        const defaultActs = SMALL_ACTS[category.id] || [];
+        const userActs = customActs[category.id] || [];
+        const allActs = [...userActs, ...defaultActs]; // Show user acts first
+
+        const checkedCount = (completedActs[category.id] || []).length;
+        const isComplete = checkedCount > 0; // "At least one SmallAct" rule
+
+        return (
+            <div key={category.id} className="card" style={{
+                padding: '0',
+                overflow: 'hidden',
+                border: isComplete ? '1px solid var(--color-success)' : (isFocused ? '2px solid var(--color-brand-primary)' : '1px solid var(--glass-border)'),
+                boxShadow: isFocused ? '0 4px 12px rgba(44, 122, 123, 0.15)' : 'none',
+                marginBottom: '1rem'
+            }}>
+                <div
+                    onClick={() => toggleCategory(category.id)}
+                    style={{
+                        padding: '1rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: isExpanded ? 'rgba(44, 122, 123, 0.05)' : 'transparent'
+                    }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <span style={{ fontSize: '1.5rem' }}>{category.icon}</span>
+                        <div>
+                            <h4 style={{ margin: 0, color: isFocused ? 'var(--color-brand-primary)' : 'inherit' }}>
+                                {category.name} {isFocused && <span style={{ fontSize: '0.7rem', background: 'var(--color-brand-primary)', color: 'white', padding: '2px 6px', borderRadius: '10px', marginLeft: '8px', verticalAlign: 'middle' }}>TODAY'S FOCUS</span>}
+                            </h4>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{category.description}</p>
+                        </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        {isComplete && <span style={{ color: 'var(--color-success)', fontSize: '0.8rem', fontWeight: 'bold' }}>✓ Done</span>}
+                        <span style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
+                    </div>
+                </div>
+
+                {isExpanded && (
+                    <div className="animate-fade-in" style={{ padding: '1rem', borderTop: '1px solid var(--glass-border)' }}>
+                        {/* Custom Act Input */}
+                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                            <input
+                                type="text"
+                                placeholder="Add your own small act..."
+                                value={newActInputs[category.id] || ''}
+                                onChange={(e) => setNewActInputs({ ...newActInputs, [category.id]: e.target.value })}
+                                onKeyDown={(e) => e.key === 'Enter' && handleAddCustomAct(category.id)}
+                                style={{ flex: 1, padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0' }}
+                            />
+                            <button
+                                onClick={() => handleAddCustomAct(category.id)}
+                                className="btn-primary"
+                                style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                            >
+                                Add
+                            </button>
+                        </div>
+
+                        <p style={{ fontSize: '0.9rem', marginBottom: '1rem', color: 'var(--color-brand-primary)' }}>
+                            Select at least one act for today:
+                        </p>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0.5rem' }}>
+                            {allActs.slice(0, 15).map((act) => (
+                                <label key={act.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.5)' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={(completedActs[category.id] || []).includes(act.id)}
+                                        onChange={() => toggleAct(category.id, act.id)}
+                                        style={{ marginTop: '0.2rem' }}
+                                    />
+                                    <span style={{ fontSize: '0.9rem' }}>{act.text}</span>
+                                </label>
+                            ))}
+                        </div>
+                        <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
+                            + {Math.max(0, allActs.length - 15)} more acts available...
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const focusedCategory = CORNERSTONE_CATEGORIES.find(c => c.id === focusedCategoryId);
+    const otherCategories = CORNERSTONE_CATEGORIES.filter(c => c.id !== focusedCategoryId);
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {focusedCategory && renderCategoryCard(focusedCategory, true)}
+
+            <button
+                onClick={() => setShowOthers(!showOthers)}
+                className="btn-primary"
+                style={{
+                    width: '100%',
+                    marginTop: '1rem',
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem'
+                }}
+            >
+                {showOthers ? 'Hide Other Cornerstones' : 'Show Other Cornerstones'}
+                <span style={{ transform: showOthers ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
+            </button>
+
+            {showOthers && (
+                <div className="animate-fade-in">
+                    {otherCategories.map(category => renderCategoryCard(category, false))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default CornerstoneTracker;
