@@ -196,18 +196,18 @@ const Community = ({ user }) => {
                     <button onClick={() => setViewingProfile(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', padding: '0.5rem' }}>← Back</button>
                 </div>
 
-                <div className="card" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1.25rem' : '2rem', marginBottom: '1rem' }}>
+                <div className="card" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1rem' : '2rem', marginBottom: '1rem' }}>
                     {viewingProfile.avatar.startsWith('http') || viewingProfile.avatar.includes('/') ? (
-                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '100px' : '180px', height: isMobile ? '100px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--color-brand-primary)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', flexShrink: 0 }} />
+                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--color-brand-primary)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', flexShrink: 0 }} />
                     ) : (
-                        <div style={{ fontSize: isMobile ? '4rem' : '6rem', width: isMobile ? '100px' : '180px', height: isMobile ? '100px' : '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{viewingProfile.avatar}</div>
+                        <div style={{ fontSize: isMobile ? '3rem' : '6rem', width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{viewingProfile.avatar}</div>
                     )}
-                    <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
-                        <h2 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.5rem', fontSize: isMobile ? '1.25rem' : '2rem' }}>{viewingProfile.name}</h2>
+                    <div style={{ textAlign: 'left', flex: 1 }}>
+                        <h2 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.5rem', fontSize: isMobile ? '1.5rem' : '2rem', lineHeight: 1.2 }}>{viewingProfile.name}</h2>
                         <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem', fontStyle: 'italic', fontSize: isMobile ? '0.9rem' : '1rem' }}>
                             "{viewingProfile.bio}"
                         </p>
-                        <button className="btn-primary" onClick={() => startChat(viewingProfile)}>
+                        <button className="btn-primary" onClick={() => startChat(viewingProfile)} style={{ width: isMobile ? '100%' : 'auto' }}>
                             Chat with {viewingProfile.name.split(' ')[0]}
                         </button>
                     </div>
@@ -216,7 +216,7 @@ const Community = ({ user }) => {
                 <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '1.5rem', alignItems: 'flex-start' }}>
                     {viewingProfile.weeklyChallenge && (
                         <div style={{ flex: 1, width: '100%' }}>
-                            <div className="card mb-2" style={{ padding: '1.5rem', height: '100%' }}>
+                            <div className="card mb-2" style={{ padding: '1.5rem', height: '100%', border: '1px solid var(--color-brand-secondary)', boxShadow: '0 4px 15px rgba(44, 122, 123, 0.1)' }}>
                                 <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{ fontSize: '1.5rem' }}>🥗</span> Weekly Challenge
                                 </h3>
