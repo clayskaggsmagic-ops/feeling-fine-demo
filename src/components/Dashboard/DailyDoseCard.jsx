@@ -1,19 +1,22 @@
 import React from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
+    const isMobile = useIsMobile();
+
     return (
         <div className="card" style={{
             background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary))',
             color: 'white',
             textAlign: 'center',
-            padding: '2rem',
+            padding: isMobile ? '1.25rem' : '2rem',
             position: 'relative'
         }}>
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '1rem'
+                marginBottom: isMobile ? '0.75rem' : '1rem'
             }}>
                 <button
                     onClick={onPrev}
@@ -21,22 +24,25 @@ const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
                         background: 'none',
                         border: 'none',
                         color: 'white',
-                        fontSize: '1.5rem',
+                        fontSize: isMobile ? '1.2rem' : '1.5rem',
                         cursor: 'pointer',
-                        opacity: 0.8
+                        opacity: 0.8,
+                        padding: '0.5rem'
                     }}
                 >
                     ←
                 </button>
 
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', flex: 1 }}>
                     <h2 style={{
                         margin: 0,
-                        fontSize: '1.5rem',
+                        fontSize: isMobile ? '1.1rem' : '1.5rem',
                         fontWeight: 'bold',
-                        marginBottom: '0.2rem'
+                        marginBottom: '0.2rem',
+                        lineHeight: '1.4'
                     }}>
-                        {date ? date.toLocaleDateString('en-US', { weekday: 'long' }) : 'Today'}'s Daily Dose
+                        {date ? date.toLocaleDateString('en-US', { weekday: 'long' }) : 'Today'}'s <span style={{ whiteSpace: 'nowrap' }}>Daily Dose</span>
+
                     </h2>
                 </div>
 
@@ -46,9 +52,10 @@ const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
                         background: 'none',
                         border: 'none',
                         color: 'white',
-                        fontSize: '1.5rem',
+                        fontSize: isMobile ? '1.2rem' : '1.5rem',
                         cursor: 'pointer',
-                        opacity: 0.8
+                        opacity: 0.8,
+                        padding: '0.5rem'
                     }}
                 >
                     →
@@ -57,10 +64,11 @@ const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
 
             <p style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '1.4rem',
+                fontSize: isMobile ? '1.1rem' : '1.4rem',
                 fontStyle: 'italic',
-                lineHeight: '1.4',
-                marginTop: '1rem'
+                lineHeight: '1.6',
+                marginTop: isMobile ? '0.75rem' : '1rem',
+                padding: isMobile ? '0 0.25rem' : '0'
             }}>
                 "{message}"
             </p>

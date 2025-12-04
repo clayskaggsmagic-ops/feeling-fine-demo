@@ -2,8 +2,10 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { CORNERSTONE_CATEGORIES } from '../../data/models';
 import { getReportAnalysis } from '../../services/GeminiService';
 import { WEBSITE_GUIDE } from '../../data/websiteGuide';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const WeeklyReport = ({ user }) => {
+  const isMobile = useIsMobile();
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [chatHistory, setChatHistory] = useState([
@@ -137,38 +139,40 @@ const WeeklyReport = ({ user }) => {
 
   return (
     <div className="animate-fade-in">
-      <h3 className="mb-2">Monthly Wellness Report</h3>
+      <h3 className="mb-2" style={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}>Monthly Wellness Report</h3>
 
       {/* Main Chart Card */}
-      <div className="card mb-2" style={{ padding: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+      <div className="card mb-2" style={{ padding: isMobile ? '1rem' : '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'flex-start', marginBottom: '1rem', gap: isMobile ? '0.5rem' : '0' }}>
           <div>
-            <h4 style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            <h4 style={{ fontSize: isMobile ? '0.9rem' : '1.2rem', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
               {selectedChart === 'total' ? 'Total Small Acts' : CORNERSTONE_CATEGORIES.find(c => c.id === selectedChart)?.name}
             </h4>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-              <span style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: isMobile ? '0.5rem' : '1rem', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: isMobile ? '2rem' : '3rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
                 {chartData.reduce((a, b) => a + b.value, 0)}
               </span>
               <span style={{
                 color: stats.trend === 'up' ? 'var(--color-success)' : 'var(--color-error)',
                 fontWeight: '600',
                 background: stats.trend === 'up' ? 'rgba(72, 187, 120, 0.1)' : 'rgba(245, 101, 101, 0.1)',
-                padding: '0.2rem 0.6rem',
+                padding: '0.2rem 0.5rem',
                 borderRadius: '12px',
-                fontSize: '0.9rem'
+                fontSize: isMobile ? '0.75rem' : '0.9rem'
               }}>
-                {stats.trend === 'up' ? '↗ Trending Up' : '↘ Trending Down'}
+                {stats.trend === 'up' ? '↗ Up' : '↘ Down'}
               </span>
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>Last 30 Days</div>
-          </div>
+          {!isMobile && (
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>Last 30 Days</div>
+            </div>
+          )}
         </div>
 
         {/* Bar Chart */}
-        <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', gap: '4px', marginBottom: '1.5rem' }}>
+        <div style={{ height: isMobile ? '120px' : '200px', display: 'flex', alignItems: 'flex-end', gap: isMobile ? '2px' : '4px', marginBottom: '1rem' }}>
           {chartData.map((d, i) => (
             <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end' }}>
               <div
@@ -238,8 +242,8 @@ const WeeklyReport = ({ user }) => {
       </div>
 
       {/* Chatbot Section */}
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', height: '400px' }}>
-        <h4 className="mb-1">Wellness Assistant 🤖</h4>
+      <div className="card" style={{ display: 'flex', flexDirection: 'column', height: isMobile ? '280px' : '400px' }}>
+        <h4 className="mb-1" style={{ fontSize: isMobile ? '1rem' : '1.25rem' }}>Wellness Assistant 🤖</h4>
         <div style={{ flex: 1, overflowY: 'auto', padding: '0.5rem', background: 'rgba(255,255,255,0.5)', borderRadius: 'var(--radius-sm)', marginBottom: '0.5rem' }}>
           {chatHistory.map((msg, i) => (
             <div key={i} style={{
@@ -248,12 +252,13 @@ const WeeklyReport = ({ user }) => {
             }}>
               <span style={{
                 display: 'inline-block',
-                padding: '0.5rem 0.8rem',
+                padding: isMobile ? '0.4rem 0.6rem' : '0.5rem 0.8rem',
                 borderRadius: '12px',
                 background: msg.role === 'user' ? 'var(--color-brand-primary)' : 'white',
                 color: msg.role === 'user' ? 'white' : 'var(--color-text-primary)',
                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-                maxWidth: '80%'
+                maxWidth: '85%',
+                fontSize: isMobile ? '0.85rem' : '1rem'
               }}>
                 {msg.text}
               </span>
@@ -282,9 +287,9 @@ const WeeklyReport = ({ user }) => {
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             placeholder="Ask for advice..."
-            style={{ flex: 1, padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0' }}
+            style={{ flex: 1, padding: isMobile ? '0.5rem' : '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0', fontSize: '16px' }}
           />
-          <button type="submit" className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Send</button>
+          <button type="submit" className="btn-primary" style={{ padding: isMobile ? '0.5rem 0.75rem' : '0.5rem 1rem' }}>Send</button>
         </form>
       </div>
     </div>

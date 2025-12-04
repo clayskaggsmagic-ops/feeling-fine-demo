@@ -56,9 +56,9 @@ const Dashboard = ({ user, onLogout }) => {
     };
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: isMobile ? '80px' : '0' }}>
+        <div className={`animate-fade-in ${isMobile ? 'mobile-content-padding' : ''}`} style={{ paddingBottom: isMobile ? '90px' : '0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ color: 'var(--color-text-secondary)' }}>Hello, {user?.name || 'Member'}</h3>
+                <h3 style={{ color: 'var(--color-text-secondary)', fontSize: isMobile ? '1rem' : '1.5rem', lineHeight: '1.4' }}>Hello, {user?.name || 'Member'}</h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 </div>
             </div>
@@ -91,18 +91,24 @@ const Dashboard = ({ user, onLogout }) => {
 
             {/* Mobile Bottom Navigation */}
             {isMobile && (
-                <div style={{
+                <div className="mobile-bottom-nav" style={{
                     position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: 'white',
-                    borderTop: '1px solid var(--glass-border)',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '90%',
+                    maxWidth: '400px',
+                    background: 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid var(--glass-border)',
+                    borderRadius: '30px',
                     display: 'flex',
                     justifyContent: 'space-around',
-                    padding: '0.5rem',
-                    boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1)',
-                    zIndex: 50
+                    alignItems: 'center',
+                    padding: '0.75rem 1rem',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    zIndex: 1000
                 }}>
                     {navItems.map((item) => (
                         <button
@@ -112,14 +118,25 @@ const Dashboard = ({ user, onLogout }) => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 background: 'transparent',
                                 color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
-                                fontSize: '0.8rem',
-                                gap: '4px'
+                                fontSize: '0.7rem',
+                                fontWeight: activeView === item.id ? '600' : '400',
+                                gap: '2px',
+                                padding: '0.25rem',
+                                minWidth: '60px',
+                                border: 'none',
+                                opacity: activeView === item.id ? 1 : 0.7,
+                                transition: 'all 0.2s ease'
                             }}
                         >
-                            <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
-                            <span>{item.label}</span>
+                            <span style={{
+                                fontSize: '1.5rem',
+                                transform: activeView === item.id ? 'scale(1.1)' : 'scale(1)',
+                                transition: 'transform 0.2s ease'
+                            }}>{item.icon}</span>
+                            <span style={{ fontSize: '0.65rem' }}>{item.label}</span>
                         </button>
                     ))}
                 </div>

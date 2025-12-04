@@ -25,8 +25,40 @@ const FeelingFineInput = ({ date }) => {
 
     return (
         <div className="card">
-            <h4 className="mb-1 text-center">How "Fine" are you feeling today?</h4>
-            <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '400px', margin: '0 auto' }}>
+            <style>{`
+                .desktop-view { display: flex; }
+                .mobile-view { display: none; }
+                
+                @media (max-width: 768px) {
+                    .desktop-view { display: none !important; }
+                    .mobile-view { display: block !important; }
+                }
+                
+                input[type=range] {
+                    width: 100%;
+                    height: 8px;
+                    border-radius: 4px;
+                    background: var(--color-brand-secondary);
+                    outline: none;
+                    -webkit-appearance: none;
+                }
+                
+                input[type=range]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    background: var(--color-brand-primary);
+                    cursor: pointer;
+                    border: 2px solid white;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                }
+            `}</style>
+            <h4 className="mb-1 text-center" style={{ lineHeight: '1.4' }}>How "Fine" are you feeling today?</h4>
+
+            {/* Desktop View - Buttons */}
+            <div className="desktop-view" style={{ justifyContent: 'space-between', maxWidth: '400px', margin: '0 auto' }}>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                     <button
                         key={num}
@@ -47,6 +79,22 @@ const FeelingFineInput = ({ date }) => {
                     </button>
                 ))}
             </div>
+
+            {/* Mobile View - Slider */}
+            <div className="mobile-view" style={{ maxWidth: '400px', margin: '0 auto', padding: '0 10px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '10px', fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
+                    {score || '-'}
+                </div>
+                <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={score || 5}
+                    onChange={(e) => handleScoreChange(parseInt(e.target.value))}
+                    style={{ width: '100%' }}
+                />
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '400px', margin: '0.5rem auto 0', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
                 <span>Not Fine</span>
                 <span>Super Fine</span>

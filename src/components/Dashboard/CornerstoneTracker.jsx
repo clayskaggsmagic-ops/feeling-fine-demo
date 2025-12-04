@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CORNERSTONE_CATEGORIES, SMALL_ACTS, DAY_FOCUS_MAPPING } from '../../data/models';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const CornerstoneTracker = ({ date }) => {
+    const isMobile = useIsMobile();
     const [expandedCategory, setExpandedCategory] = useState(null);
     const [completedActs, setCompletedActs] = useState({});
     const [customActs, setCustomActs] = useState({}); // { categoryId: [ {id, text} ] }
@@ -113,7 +115,8 @@ const CornerstoneTracker = ({ date }) => {
                         <span style={{ fontSize: '1.5rem' }}>{category.icon}</span>
                         <div>
                             <h4 style={{ margin: 0, color: isFocused ? 'var(--color-brand-primary)' : 'inherit' }}>
-                                {category.name} {isFocused && <span style={{ fontSize: '0.7rem', background: 'var(--color-brand-primary)', color: 'white', padding: '2px 6px', borderRadius: '10px', marginLeft: '8px', verticalAlign: 'middle' }}>TODAY'S FOCUS</span>}
+                                {category.name} {isFocused && <span style={{ fontSize: '0.7rem', background: 'var(--color-brand-primary)', color: 'white', padding: '2px 6px', borderRadius: '10px', marginLeft: '8px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>TODAY'S FOCUS</span>}
+
                             </h4>
                             <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{category.description}</p>
                         </div>
@@ -125,45 +128,56 @@ const CornerstoneTracker = ({ date }) => {
                 </div>
 
                 {isExpanded && (
-                    <div className="animate-fade-in" style={{ padding: '1rem', borderTop: '1px solid var(--glass-border)' }}>
+                    <div className="animate-fade-in" style={{ padding: isMobile ? '0.75rem' : '1rem', borderTop: '1px solid var(--glass-border)' }}>
                         {/* Custom Act Input */}
-                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: isMobile ? '0.75rem' : '1rem' }}>
                             <input
                                 type="text"
-                                placeholder="Add your own small act..."
+                                placeholder="Add your own..."
                                 value={newActInputs[category.id] || ''}
                                 onChange={(e) => setNewActInputs({ ...newActInputs, [category.id]: e.target.value })}
                                 onKeyDown={(e) => e.key === 'Enter' && handleAddCustomAct(category.id)}
-                                style={{ flex: 1, padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0' }}
+                                style={{ flex: 1, padding: isMobile ? '0.4rem' : '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0', fontSize: '16px' }}
                             />
                             <button
                                 onClick={() => handleAddCustomAct(category.id)}
                                 className="btn-primary"
-                                style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                                style={{ padding: isMobile ? '0.4rem 0.75rem' : '0.5rem 1rem', fontSize: isMobile ? '0.85rem' : '0.9rem' }}
                             >
                                 Add
                             </button>
                         </div>
 
-                        <p style={{ fontSize: '0.9rem', marginBottom: '1rem', color: 'var(--color-brand-primary)' }}>
-                            Select at least one act for today:
+                        <p style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', marginBottom: isMobile ? '0.5rem' : '1rem', color: 'var(--color-brand-primary)' }}>
+                            Select at least one:
                         </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '0.5rem' }}>
-                            {allActs.slice(0, 15).map((act) => (
-                                <label key={act.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.5)' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '0.25rem' : '0.5rem' }}>
+                            {allActs.slice(0, isMobile ? 8 : 15).map((act) => (
+                                <label key={act.id} style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: isMobile ? '0.4rem' : '0.5rem',
+                                    cursor: 'pointer',
+                                    padding: isMobile ? '0.35rem 0.5rem' : '0.5rem',
+                                    borderRadius: '4px',
+                                    background: (completedActs[category.id] || []).includes(act.id) ? 'rgba(44, 122, 123, 0.1)' : 'rgba(255,255,255,0.5)',
+                                    border: (completedActs[category.id] || []).includes(act.id) ? '1px solid var(--color-brand-primary)' : '1px solid transparent'
+                                }}>
                                     <input
                                         type="checkbox"
                                         checked={(completedActs[category.id] || []).includes(act.id)}
                                         onChange={() => toggleAct(category.id, act.id)}
-                                        style={{ marginTop: '0.2rem' }}
+                                        style={{ width: isMobile ? '16px' : '18px', height: isMobile ? '16px' : '18px', flexShrink: 0 }}
                                     />
-                                    <span style={{ fontSize: '0.9rem' }}>{act.text}</span>
+                                    <span style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', lineHeight: '1.5' }}>{act.text}</span>
                                 </label>
                             ))}
                         </div>
-                        <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                            + {Math.max(0, allActs.length - 15)} more acts available...
-                        </div>
+                        {allActs.length > (isMobile ? 8 : 15) && (
+                            <div style={{ marginTop: isMobile ? '0.5rem' : '1rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                                + {allActs.length - (isMobile ? 8 : 15)} more available
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

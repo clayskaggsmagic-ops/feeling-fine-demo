@@ -83,9 +83,15 @@ const Community = ({ user }) => {
     const startChat = (friend) => {
         setChatFriend(friend);
         setViewingProfile(null);
-        setChatMessages([
-            { role: 'model', text: `Hi there! It's ${friend.name.split(' ')[0]}. How are you doing today?` }
-        ]);
+        // Load saved chat history or start with greeting
+        const savedHistory = localStorage.getItem(`chat_history_${friend.id}`);
+        if (savedHistory) {
+            setChatMessages(JSON.parse(savedHistory));
+        } else {
+            setChatMessages([
+                { role: 'model', text: `Hi there! It's ${friend.name.split(' ')[0]}. How are you doing today?` }
+            ]);
+        }
     };
 
     const viewProfile = (friend) => {
@@ -98,7 +104,8 @@ const Community = ({ user }) => {
         if (!inputMessage.trim()) return;
 
         const userMsg = { role: 'user', text: inputMessage };
-        setChatMessages(prev => [...prev, userMsg]);
+        const newMessages = [...chatMessages, userMsg];
+        setChatMessages(newMessages);
         setInputMessage('');
         setIsTyping(true);
 
@@ -111,9 +118,14 @@ const Community = ({ user }) => {
 
             const responseText = await getChatResponse(chatFriend.name, inputMessage, history, user?.name || 'friend');
 
-            setChatMessages(prev => [...prev, { role: 'model', text: responseText }]);
+            const finalMessages = [...newMessages, { role: 'model', text: responseText }];
+            setChatMessages(finalMessages);
+            // Save chat history to localStorage
+            localStorage.setItem(`chat_history_${chatFriend.id}`, JSON.stringify(finalMessages));
         } catch (error) {
-            setChatMessages(prev => [...prev, { role: 'model', text: "Sorry, I'm having trouble connecting right now." }]);
+            const errorMessages = [...newMessages, { role: 'model', text: "Sorry, I'm having trouble connecting right now." }];
+            setChatMessages(errorMessages);
+            localStorage.setItem(`chat_history_${chatFriend.id}`, JSON.stringify(errorMessages));
         } finally {
             setIsTyping(false);
         }
@@ -121,42 +133,43 @@ const Community = ({ user }) => {
 
     if (chatFriend) {
         return (
-            <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--glass-border)' }}>
-                    <button onClick={() => setChatFriend(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer' }}>←</button>
+            <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', maxHeight: isMobile ? '60vh' : '80vh' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '0.75rem' : '1rem', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--glass-border)' }}>
+                    <button onClick={() => setChatFriend(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', padding: '0.5rem' }}>←</button>
                     {chatFriend.avatar.startsWith('http') || chatFriend.avatar.includes('/') ? (
-                        <img src={chatFriend.avatar} alt={chatFriend.name} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-brand-primary)' }} />
+                        <img src={chatFriend.avatar} alt={chatFriend.name} style={{ width: isMobile ? '35px' : '40px', height: isMobile ? '35px' : '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-brand-primary)' }} />
                     ) : (
                         <span style={{ fontSize: '1.5rem' }}>{chatFriend.avatar}</span>
                     )}
                     <div>
-                        <h3 style={{ margin: 0 }}>{chatFriend.name}</h3>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--color-success)' }}>● Online</span>
+                        <h3 style={{ margin: 0, fontSize: isMobile ? '1rem' : '1.5rem' }}>{chatFriend.name}</h3>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--color-success)' }}>● Online</span>
                     </div>
                 </div>
 
-                <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', background: 'rgba(255,255,255,0.5)', borderRadius: 'var(--radius-sm)', marginBottom: '1rem', minHeight: '300px' }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: isMobile ? '0.75rem' : '1rem', background: 'rgba(255,255,255,0.5)', borderRadius: 'var(--radius-sm)', marginBottom: '0.75rem', maxHeight: isMobile ? '250px' : '400px' }}>
                     {chatMessages.map((msg, i) => (
                         <div key={i} style={{
-                            marginBottom: '0.8rem',
+                            marginBottom: '0.6rem',
                             textAlign: msg.role === 'user' ? 'right' : 'left'
                         }}>
                             <div style={{
                                 display: 'inline-block',
-                                padding: '0.6rem 1rem',
+                                padding: isMobile ? '0.5rem 0.75rem' : '0.6rem 1rem',
                                 borderRadius: '12px',
                                 background: msg.role === 'user' ? 'var(--color-brand-primary)' : 'white',
                                 color: msg.role === 'user' ? 'white' : 'var(--color-text-primary)',
                                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-                                maxWidth: '80%',
-                                textAlign: 'left'
+                                maxWidth: '85%',
+                                textAlign: 'left',
+                                fontSize: isMobile ? '0.9rem' : '1rem'
                             }}>
                                 {msg.text}
                             </div>
                         </div>
                     ))}
                     {isTyping && (
-                        <div style={{ textAlign: 'left', color: 'var(--color-text-secondary)', fontSize: '0.8rem', marginLeft: '1rem' }}>
+                        <div style={{ textAlign: 'left', color: 'var(--color-text-secondary)', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
                             {chatFriend.name.split(' ')[0]} is typing...
                         </div>
                     )}
@@ -168,9 +181,9 @@ const Community = ({ user }) => {
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                         placeholder="Type a message..."
-                        style={{ flex: 1, padding: '0.8rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0' }}
+                        style={{ flex: 1, padding: isMobile ? '0.6rem' : '0.8rem', borderRadius: 'var(--radius-sm)', border: '1px solid #cbd5e0', fontSize: '16px' }}
                     />
-                    <button type="submit" className="btn-primary" style={{ padding: '0.8rem 1.5rem' }}>Send</button>
+                    <button type="submit" className="btn-primary" style={{ padding: isMobile ? '0.6rem 1rem' : '0.8rem 1.5rem' }}>Send</button>
                 </form>
             </div>
         );
@@ -179,19 +192,19 @@ const Community = ({ user }) => {
     if (viewingProfile) {
         return (
             <div className="animate-fade-in">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <button onClick={() => setViewingProfile(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer' }}>← Back</button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                    <button onClick={() => setViewingProfile(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', padding: '0.5rem' }}>← Back</button>
                 </div>
 
-                <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '2rem', padding: '2rem', marginBottom: '1.5rem' }}>
+                <div className="card" style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1.25rem' : '2rem', marginBottom: '1rem' }}>
                     {viewingProfile.avatar.startsWith('http') || viewingProfile.avatar.includes('/') ? (
-                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: '180px', height: '180px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--color-brand-primary)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', flexShrink: 0 }} />
+                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '100px' : '180px', height: isMobile ? '100px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--color-brand-primary)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', flexShrink: 0 }} />
                     ) : (
-                        <div style={{ fontSize: '6rem', width: '180px', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{viewingProfile.avatar}</div>
+                        <div style={{ fontSize: isMobile ? '4rem' : '6rem', width: isMobile ? '100px' : '180px', height: isMobile ? '100px' : '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{viewingProfile.avatar}</div>
                     )}
-                    <div style={{ textAlign: 'left' }}>
-                        <h2 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.5rem' }}>{viewingProfile.name}</h2>
-                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+                    <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+                        <h2 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.5rem', fontSize: isMobile ? '1.25rem' : '2rem' }}>{viewingProfile.name}</h2>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem', fontStyle: 'italic', fontSize: isMobile ? '0.9rem' : '1rem' }}>
                             "{viewingProfile.bio}"
                         </p>
                         <button className="btn-primary" onClick={() => startChat(viewingProfile)}>
@@ -292,7 +305,7 @@ const Community = ({ user }) => {
                         {webinars.map(webinar => (
                             <div key={webinar.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div>
-                                    <h4 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.2rem' }}>{webinar.title}</h4>
+                                    <h4 style={{ color: 'var(--color-brand-primary)', marginBottom: '0.2rem', lineHeight: '1.4' }}>{webinar.title}</h4>
                                     <p style={{ fontSize: '0.9rem', color: 'var(--color-text-primary)' }}>with {webinar.speaker}</p>
                                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{webinar.date} • {webinar.time}</p>
                                 </div>
@@ -324,7 +337,7 @@ const Community = ({ user }) => {
                                         {isPlaying ? '⏸' : '▶'}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <h4 style={{ fontSize: '1rem', marginBottom: '0.2rem' }}>{podcast.title}</h4>
+                                        <h4 style={{ fontSize: '1rem', marginBottom: '0.2rem', lineHeight: '1.4' }}>{podcast.title}</h4>
                                         <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{podcast.duration}</p>
                                     </div>
                                     <button style={{ background: 'none', color: 'var(--color-brand-primary)', fontSize: '1.5rem' }}>
@@ -370,16 +383,7 @@ const Community = ({ user }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    className="btn-secondary"
-                                    style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        startChat(friend);
-                                    }}
-                                >
-                                    Chat
-                                </button>
+                                <span style={{ fontSize: '1.2rem', color: 'var(--color-text-secondary)' }}>›</span>
                             </div>
                         ))}
                     </div>

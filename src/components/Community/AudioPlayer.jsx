@@ -6,8 +6,13 @@ const AudioPlayer = ({ podcast, onClose }) => {
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
 
+    // Load saved position when podcast changes
     useEffect(() => {
-        if (audioRef.current) {
+        if (audioRef.current && podcast) {
+            const savedPosition = localStorage.getItem(`podcast_position_${podcast.id}`);
+            if (savedPosition) {
+                audioRef.current.currentTime = parseFloat(savedPosition);
+            }
             audioRef.current.play().then(() => {
                 setIsPlaying(true);
             }).catch(error => {
@@ -16,10 +21,23 @@ const AudioPlayer = ({ podcast, onClose }) => {
         }
     }, [podcast]);
 
+    // Save position periodically
+    useEffect(() => {
+        const saveInterval = setInterval(() => {
+            if (audioRef.current && podcast && audioRef.current.currentTime > 0) {
+                localStorage.setItem(`podcast_position_${podcast.id}`, audioRef.current.currentTime.toString());
+            }
+        }, 3000); // Save every 3 seconds
+
+        return () => clearInterval(saveInterval);
+    }, [podcast]);
+
     const togglePlay = () => {
         if (audioRef.current) {
             if (isPlaying) {
                 audioRef.current.pause();
+                // Save position when pausing
+                localStorage.setItem(`podcast_position_${podcast.id}`, audioRef.current.currentTime.toString());
             } else {
                 audioRef.current.play();
             }
@@ -41,6 +59,8 @@ const AudioPlayer = ({ podcast, onClose }) => {
             const newTime = (e.target.value / 100) * audioRef.current.duration;
             audioRef.current.currentTime = newTime;
             setProgress(e.target.value);
+            // Save new position immediately
+            localStorage.setItem(`podcast_position_${podcast.id}`, newTime.toString());
         }
     };
 
