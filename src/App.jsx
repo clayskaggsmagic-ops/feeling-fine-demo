@@ -83,9 +83,17 @@ function App() {
   // DEMO MODE: Default straight to dashboard
   const [appState, setAppState] = useState('dashboard');
   const [userProfile, setUserProfile] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Check localStorage for existing auth session
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('feelingFineAuth') === 'true';
+  });
 
   useEffect(() => {
+    // Initialize Gemini if already authenticated
+    if (isAuthenticated && GEMINI_API_KEY) {
+      initializeGemini(GEMINI_API_KEY);
+    }
+
     // Check for existing user, or create a mock one for the demo
     const savedUser = localStorage.getItem('feelingFineUser');
     if (savedUser) {
@@ -107,6 +115,7 @@ function App() {
   const handleReset = () => {
     localStorage.removeItem('feelingFineUser');
     localStorage.removeItem('feelingFineTracking');
+    localStorage.removeItem('feelingFineAuth');
     // For demo, reset just reloads the page which will re-create the mock user
     window.location.reload();
   };
@@ -118,6 +127,7 @@ function App() {
         setUserProfile(updatedProfile);
         localStorage.setItem('feelingFineUser', JSON.stringify(updatedProfile));
       }
+      localStorage.setItem('feelingFineAuth', 'true');
       setIsAuthenticated(true);
     }} />;
   }
