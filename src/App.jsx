@@ -8,7 +8,9 @@ import Dashboard from './components/Dashboard/Dashboard'
 import { initializeGemini } from './services/GeminiService';
 
 // Environment variables
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+// If .env is not working, paste your API key inside the quotes below:
+const HARDCODED_API_KEY = "";
+const GEMINI_API_KEY = "AIzaSyDPzMM38cupCylE2JDqhrTyHxTHqRB8D3k" || import.meta.env.VITE_GEMINI_API_KEY;
 const ACCESS_PASSCODE = 'feelingfine2025';
 
 const PasswordScreen = ({ onUnlock }) => {
