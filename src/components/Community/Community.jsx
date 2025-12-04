@@ -133,7 +133,7 @@ const Community = ({ user }) => {
 
     if (chatFriend) {
         return (
-            <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', maxHeight: isMobile ? '60vh' : '80vh' }}>
+            <div className="animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', maxHeight: isMobile ? '60vh' : '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '0.75rem' : '1rem', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--glass-border)' }}>
                     <button onClick={() => setChatFriend(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', padding: '0.5rem' }}>←</button>
                     {chatFriend.avatar.startsWith('http') || chatFriend.avatar.includes('/') ? (
@@ -196,7 +196,7 @@ const Community = ({ user }) => {
                     <button onClick={() => setViewingProfile(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', padding: '0.5rem' }}>← Back</button>
                 </div>
 
-                <div className="card" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1rem' : '2rem', marginBottom: '1rem' }}>
+                <div className="card" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1rem' : '2.5rem', marginBottom: '1rem' }}>
                     {viewingProfile.avatar.startsWith('http') || viewingProfile.avatar.includes('/') ? (
                         <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-brand-primary)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', flexShrink: 0 }} />
                     ) : (

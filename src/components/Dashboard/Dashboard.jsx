@@ -67,8 +67,8 @@ const Dashboard = ({ user, onLogout }) => {
                 {/* Desktop Navigation - Fixed at bottom */}
                 {!isMobile && (
                     <div style={{
-                        position: 'fixed',
-                        bottom: '20px',
+                        position: 'sticky',
+                        top: '20px',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         width: '90%',

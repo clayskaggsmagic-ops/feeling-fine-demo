@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 
 const AudioPlayer = ({ podcast, onClose }) => {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
+    const isMobile = useIsMobile();
 
     // Load saved position when podcast changes
     useEffect(() => {
@@ -74,7 +76,7 @@ const AudioPlayer = ({ podcast, onClose }) => {
     return (
         <div className="animate-slide-up" style={{
             position: 'fixed',
-            bottom: 0,
+            bottom: isMobile ? '70px' : 0,
             left: 0,
             right: 0,
             background: 'rgba(255, 255, 255, 0.95)',
@@ -82,7 +84,7 @@ const AudioPlayer = ({ podcast, onClose }) => {
             borderTop: '1px solid var(--glass-border)',
             padding: '1rem',
             boxShadow: '0 -4px 20px rgba(0,0,0,0.1)',
-            zIndex: 100,
+            zIndex: 10001,
             display: 'flex',
             flexDirection: 'column',
             gap: '0.5rem'

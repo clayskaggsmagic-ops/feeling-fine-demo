@@ -94,7 +94,7 @@ const CornerstoneTracker = ({ date }) => {
 
         return (
             <div key={category.id} className="card" style={{
-                padding: '0',
+                padding: isMobile ? '0' : 'var(--spacing-md)',
                 overflow: 'hidden',
                 border: isComplete ? '1px solid var(--color-success)' : (isFocused ? '2px solid var(--color-brand-primary)' : '1px solid var(--glass-border)'),
                 boxShadow: isFocused ? '0 4px 12px rgba(44, 122, 123, 0.15)' : 'none',
