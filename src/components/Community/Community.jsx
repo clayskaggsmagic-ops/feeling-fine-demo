@@ -217,11 +217,11 @@ const Community = ({ user }) => {
                     {viewingProfile.weeklyChallenge && (
                         <div style={{ flex: 1, width: '100%' }}>
                             <div className="card mb-2" style={{ padding: '1.5rem', height: '100%', border: '1px solid var(--color-brand-secondary)', boxShadow: '0 4px 15px rgba(44, 122, 123, 0.1)' }}>
-                                <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{ fontSize: '1.5rem' }}>🥗</span> Weekly Challenge
                                 </h3>
-                                <div style={{ background: 'var(--glass-background)', padding: '1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1rem' }}>
-                                    <p style={{ margin: 0, fontWeight: '500', color: 'var(--color-brand-primary)' }}>
+                                <div style={{ background: 'var(--glass-background)', padding: '0.8rem', borderRadius: 'var(--radius-sm)', marginBottom: '0.8rem' }}>
+                                    <p style={{ margin: 0, fontWeight: '500', color: 'var(--color-brand-primary)', fontSize: '0.9rem' }}>
                                         Prompt: "{viewingProfile.weeklyChallenge.prompt}"
                                     </p>
                                 </div>
