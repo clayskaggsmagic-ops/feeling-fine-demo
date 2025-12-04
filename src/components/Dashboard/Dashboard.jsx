@@ -110,22 +110,21 @@ const Dashboard = ({ user, onLogout }) => {
             {isMobile && (
                 <div className="mobile-bottom-nav" style={{
                     position: 'fixed',
-                    bottom: '20px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '90%',
-                    maxWidth: '400px',
-                    background: 'rgba(255, 255, 255, 0.95)',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    width: '100%',
+                    background: 'rgba(255, 255, 255, 0.98)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid var(--glass-border)',
-                    borderRadius: '30px',
+                    borderTop: '1px solid var(--glass-border)',
                     display: 'flex',
                     justifyContent: 'space-around',
                     alignItems: 'center',
-                    padding: '0.75rem 1rem',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    zIndex: 1000
+                    padding: '0.5rem 1rem',
+                    paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))',
+                    boxShadow: '0 -4px 20px rgba(0,0,0,0.1)',
+                    zIndex: 9999
                 }}>
                     {navItems.map((item) => (
                         <button
