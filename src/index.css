@@ -146,6 +146,15 @@ button {
   scrollbar-width: none;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .mt-1 {
   margin-top: var(--spacing-sm);
 }
@@ -234,17 +243,18 @@ button {
   }
 
   /* Smaller buttons on mobile */
-  .btn-primary, .btn-secondary {
+  .btn-primary,
+  .btn-secondary {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
   }
 
   /* App header fixes */
-  .app-container > header h1 {
+  .app-container>header h1 {
     font-size: 1.5rem;
   }
 
-  .app-container > header p {
+  .app-container>header p {
     font-size: 0.85rem;
   }
 }
@@ -285,6 +295,7 @@ button {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -301,8 +312,10 @@ button {
     min-height: 44px;
   }
 
-  input, textarea {
-    font-size: 16px !important; /* Prevents zoom on iOS */
+  input,
+  textarea {
+    font-size: 16px !important;
+    /* Prevents zoom on iOS */
     min-height: 44px;
   }
 

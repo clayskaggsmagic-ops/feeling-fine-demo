@@ -151,32 +151,113 @@ const CornerstoneTracker = ({ date }) => {
                         <p style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', marginBottom: isMobile ? '0.5rem' : '1rem', color: 'var(--color-brand-primary)' }}>
                             Select at least one:
                         </p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '0.25rem' : '0.5rem' }}>
-                            {allActs.slice(0, isMobile ? 8 : 15).map((act) => (
-                                <label key={act.id} style={{
+
+                        {isMobile ? (
+                            /* Mobile: Horizontal swipeable container showing 4 tasks at a time */
+                            <>
+                                <div style={{
                                     display: 'flex',
-                                    alignItems: 'center',
-                                    gap: isMobile ? '0.4rem' : '0.5rem',
-                                    cursor: 'pointer',
-                                    padding: isMobile ? '0.35rem 0.5rem' : '0.5rem',
-                                    borderRadius: '4px',
-                                    background: (completedActs[category.id] || []).includes(act.id) ? 'rgba(44, 122, 123, 0.1)' : 'rgba(255,255,255,0.5)',
-                                    border: (completedActs[category.id] || []).includes(act.id) ? '1px solid var(--color-brand-primary)' : '1px solid transparent'
-                                }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={(completedActs[category.id] || []).includes(act.id)}
-                                        onChange={() => toggleAct(category.id, act.id)}
-                                        style={{ width: isMobile ? '16px' : '18px', height: isMobile ? '16px' : '18px', flexShrink: 0 }}
-                                    />
-                                    <span style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', lineHeight: '1.5' }}>{act.text}</span>
-                                </label>
-                            ))}
-                        </div>
-                        {allActs.length > (isMobile ? 8 : 15) && (
-                            <div style={{ marginTop: isMobile ? '0.5rem' : '1rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
-                                + {allActs.length - (isMobile ? 8 : 15)} more available
-                            </div>
+                                    overflowX: 'auto',
+                                    scrollSnapType: 'x mandatory',
+                                    gap: '0.5rem',
+                                    paddingBottom: '0.5rem',
+                                    WebkitOverflowScrolling: 'touch',
+                                    scrollbarWidth: 'none',
+                                    msOverflowStyle: 'none'
+                                }} className="hide-scrollbar">
+                                    {/* Group acts into pages of 4 */}
+                                    {Array.from({ length: Math.ceil(allActs.length / 4) }).map((_, pageIndex) => (
+                                        <div
+                                            key={pageIndex}
+                                            style={{
+                                                flex: '0 0 100%',
+                                                scrollSnapAlign: 'start',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: '0.25rem'
+                                            }}
+                                        >
+                                            {allActs.slice(pageIndex * 4, (pageIndex + 1) * 4).map((act) => (
+                                                <label key={act.id} style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.4rem',
+                                                    cursor: 'pointer',
+                                                    padding: '0.35rem 0.5rem',
+                                                    borderRadius: '4px',
+                                                    background: (completedActs[category.id] || []).includes(act.id) ? 'rgba(44, 122, 123, 0.1)' : 'rgba(255,255,255,0.5)',
+                                                    border: (completedActs[category.id] || []).includes(act.id) ? '1px solid var(--color-brand-primary)' : '1px solid transparent'
+                                                }}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={(completedActs[category.id] || []).includes(act.id)}
+                                                        onChange={() => toggleAct(category.id, act.id)}
+                                                        style={{ width: '16px', height: '16px', flexShrink: 0 }}
+                                                    />
+                                                    <span style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>{act.text}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                                {allActs.length > 4 && (
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.25rem',
+                                        marginTop: '0.5rem',
+                                        fontSize: '0.75rem',
+                                        color: 'var(--color-text-secondary)'
+                                    }}>
+                                        <span>Swipe for more</span>
+                                        <span style={{ fontSize: '0.9rem' }}>→</span>
+                                        <span style={{ marginLeft: '0.5rem' }}>
+                                            {Array.from({ length: Math.ceil(allActs.length / 4) }).map((_, i) => (
+                                                <span key={i} style={{
+                                                    display: 'inline-block',
+                                                    width: '6px',
+                                                    height: '6px',
+                                                    borderRadius: '50%',
+                                                    background: i === 0 ? 'var(--color-brand-primary)' : '#ccc',
+                                                    marginLeft: '3px'
+                                                }}></span>
+                                            ))}
+                                        </span>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            /* Desktop: Vertical list */
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                    {allActs.slice(0, 15).map((act) => (
+                                        <label key={act.id} style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                            cursor: 'pointer',
+                                            padding: '0.5rem',
+                                            borderRadius: '4px',
+                                            background: (completedActs[category.id] || []).includes(act.id) ? 'rgba(44, 122, 123, 0.1)' : 'rgba(255,255,255,0.5)',
+                                            border: (completedActs[category.id] || []).includes(act.id) ? '1px solid var(--color-brand-primary)' : '1px solid transparent'
+                                        }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={(completedActs[category.id] || []).includes(act.id)}
+                                                onChange={() => toggleAct(category.id, act.id)}
+                                                style={{ width: '18px', height: '18px', flexShrink: 0 }}
+                                            />
+                                            <span style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>{act.text}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {allActs.length > 15 && (
+                                    <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                                        + {allActs.length - 15} more available
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 )}

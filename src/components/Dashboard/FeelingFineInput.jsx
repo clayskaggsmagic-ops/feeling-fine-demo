@@ -36,8 +36,8 @@ const FeelingFineInput = ({ date }) => {
                 
                 input[type=range] {
                     width: 100%;
-                    height: 8px;
-                    border-radius: 4px;
+                    height: 6px;
+                    border-radius: 3px;
                     background: var(--color-brand-secondary);
                     outline: none;
                     -webkit-appearance: none;
@@ -46,8 +46,8 @@ const FeelingFineInput = ({ date }) => {
                 input[type=range]::-webkit-slider-thumb {
                     -webkit-appearance: none;
                     appearance: none;
-                    width: 24px;
-                    height: 24px;
+                    width: 20px;
+                    height: 20px;
                     border-radius: 50%;
                     background: var(--color-brand-primary);
                     cursor: pointer;
@@ -80,11 +80,8 @@ const FeelingFineInput = ({ date }) => {
                 ))}
             </div>
 
-            {/* Mobile View - Slider */}
+            {/* Mobile View - Slider (compact, no number) */}
             <div className="mobile-view" style={{ maxWidth: '400px', margin: '0 auto', padding: '0 10px' }}>
-                <div style={{ textAlign: 'center', marginBottom: '10px', fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
-                    {score || '-'}
-                </div>
                 <input
                     type="range"
                     min="1"

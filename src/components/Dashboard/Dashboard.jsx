@@ -63,9 +63,25 @@ const Dashboard = ({ user, onLogout }) => {
                 </div>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Fixed at bottom */}
             {!isMobile && (
-                <div style={{ display: 'flex', background: 'var(--glass-bg)', padding: '0.5rem', borderRadius: 'var(--radius-lg)', marginBottom: '1.5rem', boxShadow: 'var(--glass-shadow)' }}>
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '90%',
+                    maxWidth: '600px',
+                    display: 'flex',
+                    background: 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    padding: '0.5rem',
+                    borderRadius: '30px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    border: '1px solid var(--glass-border)',
+                    zIndex: 1000
+                }}>
                     {navItems.map((item) => (
                         <button
                             key={item.id}
@@ -78,10 +94,11 @@ const Dashboard = ({ user, onLogout }) => {
                                 color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
                                 fontWeight: activeView === item.id ? '600' : '400',
                                 boxShadow: activeView === item.id ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
-                                textTransform: 'capitalize'
+                                textTransform: 'capitalize',
+                                border: 'none'
                             }}
                         >
-                            {item.label}
+                            {item.icon} {item.label}
                         </button>
                     ))}
                 </div>
