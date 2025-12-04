@@ -9,7 +9,7 @@ import { initializeGemini } from './services/GeminiService';
 
 // Environment variables
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const ACCESS_PASSCODE = import.meta.env.VITE_ACCESS_PASSCODE;
+const ACCESS_PASSCODE = import.meta.env.VITE_ACCESS_PASSCODE || 'demo';
 
 const PasswordScreen = ({ onUnlock }) => {
   const [password, setPassword] = useState('');
