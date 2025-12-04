@@ -9,7 +9,7 @@ const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
             background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary))',
             color: 'white',
             textAlign: 'center',
-            padding: isMobile ? '1.25rem' : '2rem',
+            padding: isMobile ? '1rem' : '2rem',
             position: 'relative'
         }}>
             <div style={{
@@ -64,11 +64,11 @@ const DailyDoseCard = ({ message, date, onPrev, onNext }) => {
 
             <p style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: isMobile ? '1.1rem' : '1.4rem',
+                fontSize: isMobile ? '1rem' : '1.4rem',
                 fontStyle: 'italic',
-                lineHeight: '1.6',
-                marginTop: isMobile ? '0.75rem' : '1rem',
-                padding: isMobile ? '0 0.25rem' : '0'
+                lineHeight: '1.5',
+                marginTop: isMobile ? '0.5rem' : '1rem',
+                padding: isMobile ? '0' : '0'
             }}>
                 "{message}"
             </p>

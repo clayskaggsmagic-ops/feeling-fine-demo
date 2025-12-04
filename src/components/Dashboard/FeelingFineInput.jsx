@@ -81,7 +81,7 @@ const FeelingFineInput = ({ date }) => {
             </div>
 
             {/* Mobile View - Slider (compact, no number) */}
-            <div className="mobile-view" style={{ maxWidth: '400px', margin: '0 auto', padding: '0 10px' }}>
+            <div className="mobile-view" style={{ maxWidth: '400px', margin: '0 auto', padding: '0' }}>
                 <input
                     type="range"
                     min="1"

@@ -42,10 +42,10 @@ const Dashboard = ({ user, onLogout }) => {
                             setCurrentDate(newDate);
                         }}
                     />
-                    <div className="mt-2">
+                    <div className="mt-1">
                         <FeelingFineInput date={currentDate} />
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                         <CornerstoneTracker date={currentDate} />
                     </div>
                 </>
