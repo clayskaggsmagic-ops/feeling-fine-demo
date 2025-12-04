@@ -118,7 +118,7 @@ const CornerstoneTracker = ({ date }) => {
                                 {category.name} {isFocused && <span style={{ fontSize: '0.7rem', background: 'var(--color-brand-primary)', color: 'white', padding: '2px 6px', borderRadius: '10px', marginLeft: '8px', verticalAlign: 'middle', whiteSpace: 'nowrap' }}>TODAY'S FOCUS</span>}
 
                             </h4>
-                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{category.description}</p>
+                            {!isMobile && <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{category.description}</p>}
                         </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
