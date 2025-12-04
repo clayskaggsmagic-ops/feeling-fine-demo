@@ -198,7 +198,7 @@ const Community = ({ user }) => {
 
                 <div className="card" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: isMobile ? '1rem' : '2rem', padding: isMobile ? '1rem' : '2rem', marginBottom: '1rem' }}>
                     {viewingProfile.avatar.startsWith('http') || viewingProfile.avatar.includes('/') ? (
-                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '4px solid var(--color-brand-primary)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', flexShrink: 0 }} />
+                        <img src={viewingProfile.avatar} alt={viewingProfile.name} style={{ width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-brand-primary)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', flexShrink: 0 }} />
                     ) : (
                         <div style={{ fontSize: isMobile ? '3rem' : '6rem', width: isMobile ? '80px' : '180px', height: isMobile ? '80px' : '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{viewingProfile.avatar}</div>
                     )}
@@ -216,13 +216,13 @@ const Community = ({ user }) => {
                 <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '1.5rem', alignItems: 'flex-start' }}>
                     {viewingProfile.weeklyChallenge && (
                         <div style={{ flex: 1, width: '100%' }}>
-                            <div className="card mb-2" style={{ padding: '1.5rem', height: '100%', border: '1px solid var(--color-brand-secondary)', boxShadow: '0 4px 15px rgba(44, 122, 123, 0.1)' }}>
+                            <div className="card mb-2" style={{ padding: '1.5rem', height: '100%', border: '1px solid var(--glass-border)', boxShadow: 'none' }}>
                                 <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{ fontSize: '1.5rem' }}>🥗</span> Weekly Challenge
                                 </h3>
-                                <div style={{ background: 'var(--glass-background)', padding: '0.8rem', borderRadius: 'var(--radius-sm)', marginBottom: '0.8rem' }}>
-                                    <p style={{ margin: 0, fontWeight: '500', color: 'var(--color-brand-primary)', fontSize: '0.9rem' }}>
-                                        Prompt: "{viewingProfile.weeklyChallenge.prompt}"
+                                <div style={{ marginBottom: '0.8rem' }}>
+                                    <p style={{ margin: 0, fontWeight: '500', color: 'var(--color-text-primary)', fontSize: '0.9rem' }}>
+                                        Prompt: <span style={{ color: 'var(--color-brand-primary)' }}>"{viewingProfile.weeklyChallenge.prompt}"</span>
                                     </p>
                                 </div>
                                 <div style={{
@@ -230,7 +230,7 @@ const Community = ({ user }) => {
                                     height: '200px',
                                     borderRadius: 'var(--radius-md)',
                                     overflow: 'hidden',
-                                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                                 }}>
                                     <img
                                         src={viewingProfile.weeklyChallenge.image}
@@ -247,11 +247,11 @@ const Community = ({ user }) => {
                         <h3 className="mb-2">Today's Wins</h3>
                         <div style={{ display: 'grid', gap: '0.8rem' }}>
                             {viewingProfile.recentActivity.map((activity, index) => (
-                                <div key={index} className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem' }}>
+                                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.8rem 0', borderBottom: '1px solid var(--glass-border)' }}>
                                     <div style={{
-                                        fontSize: '1.2rem',
-                                        width: '40px',
-                                        height: '40px',
+                                        fontSize: '1rem',
+                                        width: '32px',
+                                        height: '32px',
                                         background: activity.type === 'custom' ? 'var(--color-accent-light)' : 'var(--glass-background)',
                                         borderRadius: '50%',
                                         display: 'flex',
@@ -261,7 +261,7 @@ const Community = ({ user }) => {
                                         {activity.type === 'custom' ? '✨' : '✅'}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ fontWeight: '500' }}>{activity.act}</div>
+                                        <div style={{ fontWeight: '500', fontSize: '0.95rem' }}>{activity.act}</div>
                                         <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
                                             {activity.type === 'custom' ? 'Custom Act • ' : 'Standard Act • '} {activity.time}
                                         </div>
