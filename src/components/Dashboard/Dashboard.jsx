@@ -56,55 +56,57 @@ const Dashboard = ({ user, onLogout }) => {
     };
 
     return (
-        <div className={`animate-fade-in ${isMobile ? 'mobile-content-padding' : ''}`} style={{ paddingBottom: isMobile ? '90px' : '0' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ color: 'var(--color-text-secondary)', fontSize: isMobile ? '1rem' : '1.5rem', lineHeight: '1.4' }}>Hello, {user?.name || 'Member'}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <>
+            <div className={`animate-fade-in ${isMobile ? 'mobile-content-padding' : ''}`} style={{ paddingBottom: isMobile ? '90px' : '0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <h3 style={{ color: 'var(--color-text-secondary)', fontSize: isMobile ? '1rem' : '1.5rem', lineHeight: '1.4' }}>Hello, {user?.name || 'Member'}</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    </div>
                 </div>
+
+                {/* Desktop Navigation - Fixed at bottom */}
+                {!isMobile && (
+                    <div style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '90%',
+                        maxWidth: '600px',
+                        display: 'flex',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        WebkitBackdropFilter: 'blur(10px)',
+                        padding: '0.5rem',
+                        borderRadius: '30px',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        border: '1px solid var(--glass-border)',
+                        zIndex: 1000
+                    }}>
+                        {navItems.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => setActiveView(item.id)}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.8rem',
+                                    borderRadius: 'var(--radius-md)',
+                                    background: activeView === item.id ? 'white' : 'transparent',
+                                    color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+                                    fontWeight: activeView === item.id ? '600' : '400',
+                                    boxShadow: activeView === item.id ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
+                                    textTransform: 'capitalize',
+                                    border: 'none'
+                                }}
+                            >
+                                {item.icon} {item.label}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {renderContent()}
             </div>
-
-            {/* Desktop Navigation - Fixed at bottom */}
-            {!isMobile && (
-                <div style={{
-                    position: 'fixed',
-                    bottom: '20px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '90%',
-                    maxWidth: '600px',
-                    display: 'flex',
-                    background: 'rgba(255, 255, 255, 0.95)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    padding: '0.5rem',
-                    borderRadius: '30px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                    border: '1px solid var(--glass-border)',
-                    zIndex: 1000
-                }}>
-                    {navItems.map((item) => (
-                        <button
-                            key={item.id}
-                            onClick={() => setActiveView(item.id)}
-                            style={{
-                                flex: 1,
-                                padding: '0.8rem',
-                                borderRadius: 'var(--radius-md)',
-                                background: activeView === item.id ? 'white' : 'transparent',
-                                color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
-                                fontWeight: activeView === item.id ? '600' : '400',
-                                boxShadow: activeView === item.id ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
-                                textTransform: 'capitalize',
-                                border: 'none'
-                            }}
-                        >
-                            {item.icon} {item.label}
-                        </button>
-                    ))}
-                </div>
-            )}
-
-            {renderContent()}
 
             {/* Mobile Bottom Navigation */}
             {isMobile && (
@@ -157,7 +159,7 @@ const Dashboard = ({ user, onLogout }) => {
                     ))}
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
