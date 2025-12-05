@@ -67,26 +67,28 @@ const Dashboard = ({ user, onLogout }) => {
                 {/* Desktop Navigation - Fixed at bottom */}
                 {!isMobile && (
                     <div style={{
-                        position: 'sticky',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        width: '100%',
+                        position: 'relative',
+                        margin: '0 auto 2rem auto',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '90%',
+                        maxWidth: '600px',
                         background: 'white',
                         padding: '1rem 2rem',
-                        borderBottom: '1px solid var(--glass-border)',
+                        borderRadius: '50px',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                         display: 'flex',
-                        justifyContent: 'space-evenly',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
-                        zIndex: 1000,
-                        marginBottom: '3rem',
+                        zIndex: 1000
                     }}>
                         {navItems.map((item) => (
                             <button
                                 key={item.id}
                                 onClick={() => setActiveView(item.id)}
                                 style={{
-                                    padding: '0.8rem 2rem',
+                                    flex: 1,
+                                    padding: '0.8rem',
                                     borderRadius: 'var(--radius-md)',
                                     background: activeView === item.id ? 'white' : 'transparent',
                                     color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
@@ -96,7 +98,7 @@ const Dashboard = ({ user, onLogout }) => {
                                     border: 'none'
                                 }}
                             >
-                                {item.icon} {item.label}
+                                {item.label}
                             </button>
                         ))}
                     </div>
