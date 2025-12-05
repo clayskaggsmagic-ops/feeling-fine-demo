@@ -67,28 +67,27 @@ const Dashboard = ({ user, onLogout }) => {
                 {/* Desktop Navigation - Fixed at bottom */}
                 {!isMobile && (
                     <div style={{
-                        position: 'relative',
-                        margin: '0 auto 2rem auto',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '90%',
-                        maxWidth: '600px',
+                        position: 'sticky',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        width: '100%',
                         background: 'white',
                         padding: '1rem 2rem',
-                        borderRadius: '50px',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                        borderBottom: '1px solid var(--glass-border)',
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        zIndex: 1000
+                        zIndex: 1000,
+                        marginBottom: '2rem',
+                        gap: '2rem'
                     }}>
                         {navItems.map((item) => (
                             <button
                                 key={item.id}
                                 onClick={() => setActiveView(item.id)}
                                 style={{
-                                    flex: 1,
-                                    padding: '0.8rem',
+                                    padding: '0.8rem 2rem',
                                     borderRadius: 'var(--radius-md)',
                                     background: activeView === item.id ? 'white' : 'transparent',
                                     color: activeView === item.id ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',

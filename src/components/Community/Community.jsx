@@ -377,8 +377,8 @@ const Community = ({ user }) => {
                                         <span style={{ fontSize: '1.5rem' }}>{friend.avatar}</span>
                                     )}
                                     <div>
-                                        <div style={{ fontWeight: '600', fontSize: isMobile ? '1rem' : '1.2rem' }}>{friend.name}</div>
-                                        <div style={{ fontSize: isMobile ? '0.8rem' : '0.9rem', color: friend.status === 'online' ? 'var(--color-success)' : 'var(--color-text-secondary)' }}>
+                                        <div style={{ fontWeight: '600', fontSize: isMobile ? '1rem' : '1.4rem' }}>{friend.name}</div>
+                                        <div style={{ fontSize: isMobile ? '0.8rem' : '1rem', color: friend.status === 'online' ? 'var(--color-success)' : 'var(--color-text-secondary)' }}>
                                             ● {friend.status}
                                         </div>
                                     </div>

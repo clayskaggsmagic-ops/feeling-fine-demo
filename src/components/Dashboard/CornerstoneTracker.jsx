@@ -230,7 +230,7 @@ const CornerstoneTracker = ({ date }) => {
                         ) : (
                             /* Desktop: Grid Layout */
                             <>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
                                     {allActs.slice(0, 15).map((act) => (
                                         <label key={act.id} style={{
                                             display: 'flex',
@@ -248,7 +248,7 @@ const CornerstoneTracker = ({ date }) => {
                                                 onChange={() => toggleAct(category.id, act.id)}
                                                 style={{ width: '18px', height: '18px', flexShrink: 0 }}
                                             />
-                                            <span style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>{act.text}</span>
+                                            <span style={{ fontSize: '1.1rem', lineHeight: '1.5' }}>{act.text}</span>
                                         </label>
                                     ))}
                                 </div>
