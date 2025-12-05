@@ -68,14 +68,11 @@ const Dashboard = ({ user, onLogout }) => {
                 {!isMobile && (
                     <div style={{
                         position: 'relative',
-                        margin: '0 auto 2rem auto',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '90%',
-                        maxWidth: '600px',
+                        marginBottom: '2rem',
+                        width: '100%',
                         background: 'white',
                         padding: '1rem 2rem',
-                        borderRadius: '50px',
+                        borderRadius: 'var(--radius-lg)',
                         boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                         display: 'flex',
                         justifyContent: 'space-between',
